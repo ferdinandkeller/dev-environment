@@ -1,0 +1,10 @@
+[user]
+	name = Ferdinand Keller
+	email = ferdinand.keller@proton.me
+	username = ferdinandkeller
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nvim
