@@ -3,7 +3,19 @@ FROM ubuntu:latest
 
 # update the package list & install some basic tools
 RUN apt-get update && \
-    apt-get install -y curl wget sudo
+    apt-get install -y tar zip curl wget sudo build-essential make git zsh locales
+
+
+# === USER ===
+# add ubuntu to sudoers & remove password
+RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    passwd -d ubuntu
+
+# set the working directory
+WORKDIR /home/ubuntu
+
+# switch to the ubuntu user
+USER ubuntu
 
 
 # === MACHINE ===
@@ -11,36 +23,24 @@ RUN apt-get update && \
 # RUN timedatectl set-timezone UTC
 ENV TZ=etc/UTC
 
+# set the locale to en_US.UTF-8
+RUN sudo locale-gen en_US.UTF-8 && \
+    sudo update-locale LANG=en_US.UTF-8
 
-# === COLORS ===
+ENV LANG=en_US.UTF-8
+
 # enable colored output in the terminal
 ENV TERM=xterm-256color
 
 
-# === USER ===
-# create a new user 'devuser' and add to sudoers
-RUN useradd -m -s /bin/bash devuser && \
-    echo 'devuser ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-# set the new user as the default user
-USER devuser
-
-# set the working directory
-WORKDIR /home/devuser
-
-
 # === GIT ===
-# install git
-RUN sudo apt-get install -y git
-
 # install git config
-COPY .gitconfig .
+COPY --chown=ubuntu:ubuntu .gitconfig .
 
 
 # === SHELL ===
-# install & configure zsh
-RUN sudo apt-get install -y zsh && \
-    sudo chsh -s /usr/bin/zsh
+# change default shell
+RUN chsh -s /usr/bin/zsh
 
 # install oh-my-zsh (keep the default theme)
 RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
@@ -49,6 +49,9 @@ RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 # === EDITOR ===
 # install neovim
 RUN sudo apt-get install -y neovim
+
+# copy neovim config
+COPY --chown=ubuntu:ubuntu init.lua .config/nvim/init.lua
 
 
 # === TMUX ===
@@ -60,7 +63,7 @@ RUN mkdir -p .tmux/plugins && \
     git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
 
 # clone tmux config
-COPY .tmux.conf .
+COPY --chown=ubuntu:ubuntu .tmux.conf .
 
 
 # === GO ===
