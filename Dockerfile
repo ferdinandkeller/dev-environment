@@ -6,6 +6,22 @@ RUN apt-get update && \
     apt-get install -y tar zip curl wget sudo build-essential make git zsh locales
 
 
+# === DOCKER ===
+# install docker
+RUN apt-get update && \
+    apt-get install -y ca-certificates curl && \
+    install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# add ubuntu to the docker group
+RUN sudo usermod -aG docker ubuntu
+
+
 # === USER ===
 # add ubuntu to sudoers & remove password
 RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
@@ -72,5 +88,5 @@ RUN sudo apt-get install -y golang-go
 
 
 # === START ===
-# we want to start with a z shell by default
-CMD ["/usr/bin/zsh"]
+# start docker daemon & open a new shell
+CMD ["sh", "-c", "sudo nohup dockerd >/dev/null 2>&1 & /usr/bin/tmux"]
