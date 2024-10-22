@@ -88,5 +88,5 @@ RUN sudo apt-get install -y golang-go
 
 
 # === START ===
-# start docker daemon & open a new shell
-CMD ["sh", "-c", "sudo nohup dockerd >/dev/null 2>&1 & /usr/bin/tmux"]
+# start docker daemon
+CMD ["sudo", "dockerd"]
