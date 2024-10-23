@@ -13,4 +13,4 @@ CONTAINER_ID=$(docker run --rm -d --privileged dev-env:latest)
 echo "$CONTAINER_ID" > .container_id
 
 # join the container
-docker exec -it $CONTAINER_ID /usr/bin/tmux
+docker exec -it $CONTAINER_ID /usr/bin/zsh
