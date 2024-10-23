@@ -82,10 +82,9 @@ RUN mkdir -p .tmux/plugins && \
 COPY --chown=ubuntu:ubuntu .tmux.conf .
 
 
-# === GO ===
-# install go
-RUN sudo apt-get install -y golang-go
-
+# === LANGUAGE SPECIFICS ===
+# clone the install scripts folder
+COPY --chown=ubuntu:ubuntu install ./install
 
 # === START ===
 # start docker daemon
