@@ -32,7 +32,7 @@ echo "installation done"
 
 # add path to $HOME/.profile (if not already there)
 new_path="PATH=\"$dest_folder/go/bin:\$PATH\""
-(cat $HOME/.profile | grep -x $new_path) || echo "\n$new_path" >> $HOME/.profile
+(cat $HOME/.profile | grep -x $new_path) || printf "\n$new_path" >> $HOME/.profile
 
 # source the updated file
 echo "Please run 'source $HOME/.profile' to update your environment variables."
