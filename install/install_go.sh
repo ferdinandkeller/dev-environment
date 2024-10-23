@@ -35,6 +35,9 @@ new_path="PATH=\"$dest_folder/go/bin:\$PATH\""
 (cat $HOME/.bashrc | grep -xF $new_path) || printf "\n$new_path" >> $HOME/.bashrc
 (cat $HOME/.zshrc | grep -xF $new_path) || printf "\n$new_path" >> $HOME/.zshrc
 
+# source $HOME/.bashrc or $HOME/.zshrc
+echo "please run 'source \$HOME/.bashrc' or 'source \$HOME/.zshrc' to update your environment variables."
+
 # clean /tmp
 rm /tmp/go.tar.gz
 echo "cleaning done"
