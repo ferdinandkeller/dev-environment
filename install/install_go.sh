@@ -38,5 +38,5 @@ new_path="PATH=\"$dest_folder/go/bin:\$PATH\""
 echo "Please run 'source $HOME/.profile' to update your environment variables."
 
 # clean /tmp
-rm -r /tmp/go.tar.gz
+rm /tmp/go.tar.gz
 echo "cleaning done"
