@@ -30,12 +30,10 @@ mkdir -p $dest_folder
 mv /tmp/go $dest_folder
 echo "installation done"
 
-# add path to $HOME/.profile (if not already there)
+# add path to $HOME/.bashrc & $HOME/.zshrc (if not already there)
 new_path="PATH=\"$dest_folder/go/bin:\$PATH\""
-(cat $HOME/.profile | grep -x $new_path) || printf "\n$new_path" >> $HOME/.profile
-
-# source the updated file
-echo "Please run 'source $HOME/.profile' to update your environment variables."
+(cat $HOME/.bashrc | grep -xF $new_path) || printf "\n$new_path" >> $HOME/.bashrc
+(cat $HOME/.zshrc | grep -xF $new_path) || printf "\n$new_path" >> $HOME/.zshrc
 
 # clean /tmp
 rm /tmp/go.tar.gz
